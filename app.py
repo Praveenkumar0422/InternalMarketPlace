@@ -1,208 +1,221 @@
-# app.py
-# Flask API for Natural Language Query Processing
-# FIXED VERSION - No double wrapping in /parse endpoint
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from services.query_parser import get_parser
-from services.database import DatabaseService
-import logging
+import os
+import tempfile
+from pathlib import Path
 
-# Initialize Flask app
+from config import Config
+from services.resume_parser import ResumeParser
+from services.query_parser import QueryParser
+from services.vector_service import VectorService
+from services.validator import ApplicationValidator
+
+# -------------------------------------------------
+# Flask App Setup
+# -------------------------------------------------
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app)
+app.config.from_object(Config)
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
-
-# Initialize services
-parser = get_parser()
-db_service = DatabaseService()
+# -------------------------------------------------
+# Service instances (lazy initialized)
+# -------------------------------------------------
+resume_parser = None
+query_parser = None
+vector_service = None
+validator = None
 
 
+def init_services():
+    """Initialize all heavy services safely (Gunicorn compatible)"""
+    global resume_parser, query_parser, vector_service, validator
+
+    if resume_parser is None:
+        print("Initializing services...")
+        resume_parser = ResumeParser()
+        query_parser = QueryParser()
+        vector_service = VectorService()
+        validator = ApplicationValidator()
+        print("Services initialized successfully!")
+
+
+# -------------------------------------------------
+# Ensure services initialize once (Gunicorn-safe)
+# -------------------------------------------------
+@app.before_first_request
+def startup():
+    init_services()
+
+
+# -------------------------------------------------
+# Health Check
+# -------------------------------------------------
 @app.route('/health', methods=['GET'])
-def health_check():
-    """Health check endpoint"""
-    try:
-        # Just check if parser is loaded (skip database check for now)
-        parser_healthy = parser is not None and parser.nlp is not None
-        
-        return jsonify({
-            'status': 'healthy' if parser_healthy else 'degraded',
-            'model_loaded': parser_healthy,
-            'service': 'AI Talent Search API',
-            'entity_types': parser.get_entity_types() if parser_healthy else []
-        }), 200
-    except Exception as e:
-        logger.error(f"Health check failed: {e}")
-        return jsonify({
-            'status': 'unhealthy',
-            'error': str(e)
-        }), 500
+def health():
+    return jsonify({
+        'status': 'healthy',
+        'services': {
+            'resume_parser': resume_parser is not None,
+            'query_parser': query_parser is not None,
+            'vector_service': vector_service is not None,
+            'validator': validator is not None
+        },
+        'vector_db_count': vector_service.get_stats()['count'] if vector_service else 0
+    })
 
+
+# -------------------------------------------------
+# Resume Parsing
+# -------------------------------------------------
 @app.route('/parse', methods=['POST'])
-def parse_query_endpoint():
-    """
-    Parse natural language query and extract entities
-
-    ✅ FIXED: Returns result directly without extra wrapping
-    """
+def parse_resume():
     try:
-        data = request.get_json()
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file provided'}), 400
 
-        if not data or 'query' not in data:
-            return jsonify({
-                'error': 'Missing query parameter'
-            }), 400
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
 
-        query = data['query']
+        suffix = Path(file.filename).suffix
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+            file.save(tmp.name)
+            tmp_path = tmp.name
 
-        logger.info(f"Parsing query: {query}")
-
-        # Parse the query
-        result = parser.parse_query(query)
-
-        # ✅ Return result DIRECTLY - no extra wrapping!
-        return jsonify(result), 200
+        try:
+            result = resume_parser.parse_resume(tmp_path)
+            return jsonify(result)
+        finally:
+            os.unlink(tmp_path)
 
     except Exception as e:
-        logger.error(f"Error parsing query: {e}", exc_info=True)
-        return jsonify({
-            'error': str(e),
-            'original_query': data.get('query', ''),
-            'parsed': {
-                'skills': [],
-                'categories': [],
-                'category_skills': [],
-                'min_years_experience': None,
-                'experience_operator': 'gte',
-                'experience_context': None,
-                'location': None,
-                'availability_status': None,
-                'skill_levels': [],
-                'roles': [],
-                'certifications': [],
-                'companies': [],
-                'dates': []
-            },
-            'applied_filters': [],
-            'skills_found': 0
-        }), 500
+        return jsonify({'error': str(e)}), 500
 
 
+# -------------------------------------------------
+# Chat / Query Parsing + Vector Search
+# -------------------------------------------------
 @app.route('/chat', methods=['POST'])
-def chat_search():
-    """
-    Full search endpoint - parse query and return matching employees
-    """
+def parse_and_search():
     try:
         data = request.get_json()
-
         if not data or 'query' not in data:
-            return jsonify({
-                'error': 'Missing query parameter'
-            }), 400
+            return jsonify({'error': 'No query provided'}), 400
 
         query = data['query']
 
-        logger.info(f"Processing search query: {query}")
+        parsed = query_parser.parse_query(query)
 
-        # Step 1: Parse the query
-        parse_result = parser.parse_query(query)
+        search_parts = []
+        if parsed['parsed']['skills']:
+            search_parts.append(' '.join(parsed['parsed']['skills']))
+        if parsed['parsed']['location']:
+            search_parts.append(parsed['parsed']['location'])
+        if parsed['parsed']['availability_status']:
+            search_parts.append(parsed['parsed']['availability_status'])
 
-        if 'error' in parse_result:
-            return jsonify({
-                'error': parse_result['error'],
-                'original_query': query
-            }), 500
+        search_text = query if not search_parts else ' '.join(search_parts)
 
-        # Step 2: Extract search criteria
-        parsed_data = parse_result['parsed']
-        skills = parsed_data.get('skills', [])
-        category_skills = parsed_data.get('category_skills', [])
-        all_skills = list(set(skills + category_skills))
+        filters = {}
+        if parsed['parsed']['location']:
+            filters['location'] = parsed['parsed']['location']
+        if parsed['parsed']['availability_status']:
+            filters['availability'] = parsed['parsed']['availability_status']
 
-        min_years = parsed_data.get('min_years_experience')
-        exp_operator = parsed_data.get('experience_operator', 'gte')
-        exp_context = parsed_data.get('experience_context')
-        location = parsed_data.get('location')
-        availability = parsed_data.get('availability_status')
-
-        logger.info(f"Search criteria - Skills: {all_skills}, Years: {min_years}, Location: {location}")
-
-        # Step 3: Search database
-        if not all_skills:
-            logger.warning("No skills found in query")
-            return jsonify({
-                'original_query': query,
-                'parsed': parsed_data,
-                'results': [],
-                'total_results': 0,
-                'search_method': 'sql',
-                'message': 'No skills detected in query'
-            }), 200
-
-        # Get matching employees
-        employees = db_service.search_employees(
-            skills=all_skills,
-            min_years=min_years,
-            operator=exp_operator,
-            experience_context=exp_context,
-            location=location,
-            availability=availability
+        vector_results = vector_service.search(
+            search_text,
+            n_results=20,
+            filters=filters if filters else None
         )
 
-        logger.info(f"Found {len(employees)} matching employees")
+        enriched_results = []
+        for result in vector_results:
+            match_info = validator.calculate_query_match(
+                employee_data=result,
+                query_requirements=parsed['parsed']
+            )
+            enriched_results.append({
+                **result,
+                'detailed_match': match_info
+            })
 
-        # Step 4: Return results
+        enriched_results.sort(
+            key=lambda x: x['detailed_match']['overall_match_percentage'],
+            reverse=True
+        )
+
         return jsonify({
-            'original_query': query,
-            'parsed': parsed_data,
-            'results': employees,
-            'total_results': len(employees),
-            'search_method': 'sql'
-        }), 200
+            **parsed,
+            'vector_results': enriched_results,
+            'search_text_used': search_text,
+            'total_results': len(enriched_results)
+        })
 
     except Exception as e:
-        logger.error(f"Error in chat search: {e}", exc_info=True)
-        return jsonify({
-            'error': str(e),
-            'original_query': data.get('query', ''),
-            'results': [],
-            'total_results': 0
-        }), 500
+        return jsonify({'error': str(e)}), 500
 
 
-@app.route('/stats', methods=['GET'])
-def get_stats():
-    """Get API statistics"""
-    try:
-        parser_stats = parser.get_stats()
-        db_stats = db_service.get_stats()
+# -------------------------------------------------
+# Vector Index APIs
+# -------------------------------------------------
+@app.route('/vector/index', methods=['POST'])
+def index_employee():
+    data = request.get_json()
+    if not data or 'employee_id' not in data:
+        return jsonify({'error': 'No employee data provided'}), 400
 
-        return jsonify({
-            'parser': parser_stats,
-            'database': db_stats
-        }), 200
-    except Exception as e:
-        logger.error(f"Error getting stats: {e}")
-        return jsonify({
-            'error': str(e)
-        }), 500
-
-
-if __name__ == '__main__':
-    logger.info("Starting Flask API...")
-    logger.info(f"Parser loaded: {parser.nlp is not None}")
-    logger.info(f"Entity types: {parser.get_entity_types()}")
-
-    app.run(
-        host='0.0.0.0',
-        port=5000,
-        debug=True
+    return jsonify(
+        vector_service.index_employee(
+            data['employee_id'],
+            data.get('employee_data', {})
+        )
     )
 
+
+@app.route('/vector/index-batch', methods=['POST'])
+def index_batch():
+    data = request.get_json()
+    employees = data.get('employees', [])
+
+    results = [
+        vector_service.index_employee(emp['employee_id'], emp)
+        for emp in employees
+    ]
+
+    return jsonify({'indexed': len(results), 'results': results})
+
+
+@app.route('/vector/search', methods=['POST'])
+def search_employees():
+    data = request.get_json()
+    if not data or 'query' not in data:
+        return jsonify({'error': 'No query provided'}), 400
+
+    results = vector_service.search(
+        data['query'],
+        data.get('n_results', 20),
+        data.get('filters')
+    )
+
+    return jsonify({'results': results, 'count': len(results)})
+
+
+@app.route('/vector/stats', methods=['GET'])
+def vector_stats():
+    return jsonify(vector_service.get_stats())
+
+
+@app.route('/vector/clear', methods=['POST'])
+def clear_vector_db():
+    return jsonify(vector_service.clear_all())
+
+
+# -------------------------------------------------
+# Local Run (NOT used by Gunicorn)
+# -------------------------------------------------
+if __name__ == '__main__':
+    app.run(
+        host='0.0.0.0',
+        port=10000,
+        debug=False
+    )
