@@ -1,0 +1,232 @@
+{
+  "categories": {
+    "Programming Language": {
+      "description": "Programming languages for software development",
+      "keywords": ["programming", "coding", "developer", "language", "code"],
+      "technologies": ["Python", "JavaScript", "TypeScript", "Java", "C++", "C#", "Ruby", "Go", "Rust", "PHP", "Swift", "Kotlin", "Scala", "R", "MATLAB"],
+      "aliases": ["programming languages", "coding languages", "dev languages"]
+    },
+    "Cloud Platform": {
+      "description": "Cloud computing platforms and services",
+      "keywords": ["cloud", "platform", "infrastructure", "hosting", "serverless"],
+      "technologies": ["AWS", "Azure", "GCP"],
+      "aliases": ["cloud computing", "cloud services", "cloud infrastructure"]
+    },
+    "Frontend Framework": {
+      "description": "Frontend web development frameworks",
+      "keywords": ["frontend", "ui", "web", "client-side", "browser"],
+      "technologies": ["React", "Angular", "Vue", "Svelte"],
+      "aliases": ["front-end", "ui framework", "web framework"]
+    },
+    "Backend Framework": {
+      "description": "Backend server-side frameworks",
+      "keywords": ["backend", "server", "api", "server-side"],
+      "technologies": ["Django", "Flask", "Spring", "Express", "FastAPI", "Laravel", "ASP.NET"],
+      "aliases": ["back-end", "server framework", "api framework"]
+    },
+    "Database": {
+      "description": "Database management systems",
+      "keywords": ["database", "db", "data storage", "sql", "nosql"],
+      "technologies": ["MySQL", "PostgreSQL", "MongoDB", "Redis", "SQLite", "Oracle", "Cassandra", "Elasticsearch"],
+      "aliases": ["data storage", "dbms", "database systems"]
+    },
+    "DevOps Tool": {
+      "description": "DevOps and CI/CD tools",
+      "keywords": ["devops", "ci", "cd", "pipeline", "automation", "deployment"],
+      "technologies": ["Docker", "Kubernetes", "Jenkins", "Terraform", "Ansible"],
+      "aliases": ["devops", "ci/cd", "deployment tools"]
+    },
+    "Version Control": {
+      "description": "Version control systems and platforms",
+      "keywords": ["version control", "git", "repository", "source control"],
+      "technologies": ["Git", "GitHub", "GitLab"],
+      "aliases": ["source control", "vcs", "git"]
+    },
+    "Mobile Framework": {
+      "description": "Mobile application development frameworks",
+      "keywords": ["mobile", "ios", "android", "app", "smartphone"],
+      "technologies": ["React Native", "Flutter"],
+      "aliases": ["mobile development", "app framework"]
+    },
+    "Machine Learning": {
+      "description": "Machine learning and AI frameworks",
+      "keywords": ["machine learning", "ml", "ai", "deep learning", "neural network"],
+      "technologies": ["TensorFlow", "PyTorch", "Scikit-learn"],
+      "aliases": ["ml", "ai", "artificial intelligence", "deep learning"]
+    },
+    "Data Science": {
+      "description": "Data science and analysis tools",
+      "keywords": ["data science", "data analysis", "analytics", "visualization"],
+      "technologies": ["Pandas", "NumPy", "R"],
+      "aliases": ["data analytics", "data analysis"]
+    },
+    "Big Data": {
+      "description": "Big data processing frameworks",
+      "keywords": ["big data", "distributed", "processing", "streaming"],
+      "technologies": ["Hadoop", "Spark", "Kafka"],
+      "aliases": ["big data processing", "distributed computing"]
+    },
+    "Design Tool": {
+      "description": "UI/UX design and graphics tools",
+      "keywords": ["design", "ui", "ux", "graphics", "mockup", "prototype"],
+      "technologies": ["Figma", "Sketch", "Adobe XD", "Photoshop", "Illustrator", "Blender"],
+      "aliases": ["ui design", "ux design", "graphics design"]
+    },
+    "Testing Tool": {
+      "description": "Software testing and QA tools",
+      "keywords": ["testing", "qa", "test automation", "quality assurance"],
+      "technologies": ["Jest", "Pytest", "Selenium", "Postman"],
+      "aliases": ["qa tools", "test automation", "testing framework"]
+    },
+    "Web Server": {
+      "description": "Web and application servers",
+      "keywords": ["web server", "http server", "application server"],
+      "technologies": ["Nginx", "Apache"],
+      "aliases": ["http server", "application server"]
+    },
+    "CSS Framework": {
+      "description": "CSS frameworks and preprocessors",
+      "keywords": ["css", "styling", "styles", "frontend styling"],
+      "technologies": ["Tailwind CSS", "Bootstrap", "Material UI", "Sass", "Less"],
+      "aliases": ["css library", "styling framework"]
+    },
+    "Game Development": {
+      "description": "Game engines and development tools",
+      "keywords": ["game", "gaming", "3d", "engine", "game development"],
+      "technologies": ["Unity", "Unreal Engine", "Blender"],
+      "aliases": ["game engine", "game dev"]
+    },
+    "JavaScript Library": {
+      "description": "JavaScript utility libraries",
+      "keywords": ["javascript", "js", "library", "utility"],
+      "technologies": ["jQuery", "Lodash", "Moment.js"],
+      "aliases": ["js library", "javascript utilities"]
+    },
+    "Runtime Environment": {
+      "description": "JavaScript runtime environments",
+      "keywords": ["runtime", "javascript", "server-side js"],
+      "technologies": ["Node.js"],
+      "aliases": ["js runtime", "node"]
+    },
+    "State Management": {
+      "description": "State management libraries",
+      "keywords": ["state", "state management", "store"],
+      "technologies": ["Redux"],
+      "aliases": ["state library"]
+    },
+    "Build Tool": {
+      "description": "Build and bundling tools",
+      "keywords": ["build", "bundler", "compiler", "webpack"],
+      "technologies": ["Webpack", "Babel"],
+      "aliases": ["bundler", "build system"]
+    },
+    "Message Broker": {
+      "description": "Message queue and broker systems",
+      "keywords": ["message", "queue", "broker", "messaging"],
+      "technologies": ["Kafka", "RabbitMQ"],
+      "aliases": ["message queue", "messaging system"]
+    },
+    "API": {
+      "description": "API technologies and architectures",
+      "keywords": ["api", "rest", "graphql", "web service"],
+      "technologies": ["REST", "GraphQL"],
+      "aliases": ["web api", "api architecture"]
+    },
+    "Project Management": {
+      "description": "Project and collaboration tools",
+      "keywords": ["project management", "agile", "scrum", "collaboration"],
+      "technologies": ["JIRA", "Confluence", "Slack"],
+      "aliases": ["collaboration tools", "pm tools"]
+    }
+  },
+  
+  "technologies": {
+    "Python": {
+      "canonical_name": "Python",
+      "category": "Programming Language",
+      "variants": ["Python", "python", "PYTHON", "PyThon", "phyton", "pyhton", "pythn", "pythone", "pyton", "pyth0n", "pythno", "pytohn", "pyrhon", "puthon"],
+      "abbreviations": ["py", "Py", "PY"],
+      "context_words": ["django", "flask", "pandas", "numpy", "scipy", "fastapi", "pytest", "programming", "script", "code", "development"],
+      "related_categories": ["Backend Framework", "Machine Learning", "Data Science"],
+      "proficiency_levels": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    "JavaScript": {
+      "canonical_name": "JavaScript",
+      "category": "Programming Language",
+      "variants": ["JavaScript", "javascript", "JAVASCRIPT", "Javascript", "java script", "javascrpit", "javascriopt", "javascrpt", "javasript", "javscript", "javascrip", "javacsript", "javascripts", "java-script"],
+      "abbreviations": ["JS", "js", "Js"],
+      "context_words": ["react", "angular", "vue", "node", "frontend", "backend", "fullstack", "web", "browser", "es6", "typescript"],
+      "related_categories": ["Frontend Framework", "Backend Framework", "Runtime Environment"],
+      "proficiency_levels": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    "AWS": {
+      "canonical_name": "AWS",
+      "category": "Cloud Platform",
+      "variants": ["AWS", "aws", "Amazon Web Services", "amazon web services", "AmazonWebServices", "Amazon AWS", "awss"],
+      "abbreviations": [],
+      "context_words": ["cloud", "ec2", "s3", "lambda", "rds", "dynamodb", "iam", "cloudformation", "amazon"],
+      "related_categories": ["DevOps Tool"],
+      "proficiency_levels": ["Associate", "Professional", "Specialty"]
+    },
+    "Azure": {
+      "canonical_name": "Azure",
+      "category": "Cloud Platform",
+      "variants": ["Azure", "azure", "AZURE", "Microsoft Azure", "microsoft azure", "MS Azure", "azur", "azrue"],
+      "abbreviations": [],
+      "context_words": ["cloud", "microsoft", "vm", "devops", "functions", "cosmos", "active directory"],
+      "related_categories": ["DevOps Tool"],
+      "proficiency_levels": ["Fundamentals", "Associate", "Expert"]
+    },
+    "GCP": {
+      "canonical_name": "GCP",
+      "category": "Cloud Platform",
+      "variants": ["GCP", "gcp", "Google Cloud", "google cloud", "Google Cloud Platform", "google cloud platform", "GoogleCloud", "googlecloud"],
+      "abbreviations": [],
+      "context_words": ["cloud", "google", "compute engine", "app engine", "kubernetes", "bigquery", "firebase"],
+      "related_categories": ["DevOps Tool"],
+      "proficiency_levels": ["Associate", "Professional"]
+    },
+    "React": {
+      "canonical_name": "React",
+      "category": "Frontend Framework",
+      "variants": ["React", "react", "REACT", "ReactJS", "reactjs", "React.js", "react.js", "Reactjs", "reakt", "raect", "reat"],
+      "abbreviations": [],
+      "context_words": ["javascript", "jsx", "components", "hooks", "redux", "frontend", "ui", "web", "spa", "next"],
+      "related_categories": ["JavaScript Library", "State Management"],
+      "proficiency_levels": ["Beginner", "Intermediate", "Advanced", "Expert"]
+    },
+    "Docker": {
+      "canonical_name": "Docker",
+      "category": "DevOps Tool",
+      "variants": ["Docker", "docker", "DOCKER", "dokcer", "dockerr"],
+      "abbreviations": [],
+      "context_words": ["container", "containerization", "image", "devops", "kubernetes", "compose", "orchestration"],
+      "related_categories": ["Cloud Platform"],
+      "proficiency_levels": ["Beginner", "Intermediate", "Advanced"]
+    },
+    "Kubernetes": {
+      "canonical_name": "Kubernetes",
+      "category": "DevOps Tool",
+      "variants": ["Kubernetes", "kubernetes", "KUBERNETES", "K8s", "k8s", "K8S", "kube", "Kube", "kuberntes", "kubernete", "kuberentes"],
+      "abbreviations": ["k8s", "K8s", "K8S"],
+      "context_words": ["container", "orchestration", "docker", "cluster", "pod", "deployment", "devops", "cloud"],
+      "related_categories": ["Cloud Platform"],
+      "proficiency_levels": ["Associate", "Administrator", "Architect"]
+    }
+  },
+  
+  "category_search_patterns": {
+    "cloud engineer": ["Cloud Platform", "DevOps Tool"],
+    "cloud developer": ["Cloud Platform", "DevOps Tool"],
+    "frontend developer": ["Frontend Framework", "CSS Framework", "JavaScript Library"],
+    "backend developer": ["Backend Framework", "Database", "API"],
+    "full stack developer": ["Frontend Framework", "Backend Framework", "Database"],
+    "devops engineer": ["DevOps Tool", "Cloud Platform", "Version Control"],
+    "data scientist": ["Machine Learning", "Data Science", "Big Data"],
+    "mobile developer": ["Mobile Framework", "Programming Language"],
+    "ml engineer": ["Machine Learning", "Data Science"],
+    "qa engineer": ["Testing Tool"],
+    "ui designer": ["Design Tool"],
+    "game developer": ["Game Development", "Programming Language"]
+  }
+}

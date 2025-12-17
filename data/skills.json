@@ -1,0 +1,83 @@
+{
+  "skills": [
+    {"name": "Python", "aliases": ["python3", "py", "python2", "cpython", "python programming"], "category": "Programming"},
+    {"name": "JavaScript", "aliases": ["js", "ecmascript", "es6", "es2015", "vanilla js"], "category": "Programming"},
+    {"name": "C#", "aliases": ["csharp", "c-sharp", "c sharp"], "category": "Programming"},
+    {"name": "Java", "aliases": ["java8", "java11", "java17", "jdk", "j2ee", "jvm"], "category": "Programming"},
+    {"name": "AWS", "aliases": ["amazon web services", "ec2", "s3", "lambda", "aws cloud", "amazon cloud"], "category": "Cloud"},
+    {"name": "Azure", "aliases": ["microsoft azure", "azure cloud", "azure devops", "ms azure"], "category": "Cloud"},
+    {"name": "GCP", "aliases": ["google cloud", "google cloud platform", "gcloud"], "category": "Cloud"},
+    {"name": "React", "aliases": ["reactjs", "react.js", "react js", "react native"], "category": "Frontend"},
+    {"name": "Angular", "aliases": ["angularjs", "angular2", "angular js", "ng"], "category": "Frontend"},
+    {"name": "Vue", "aliases": ["vuejs", "vue.js", "vue js"], "category": "Frontend"},
+    {"name": "Node.js", "aliases": ["nodejs", "node", "express", "expressjs", "node js"], "category": "Backend"},
+    {"name": ".NET Core", "aliases": ["dotnet core", "asp.net", "aspnet core", "asp.net core", "dotnet"], "category": "Backend"},
+    {"name": "Spring", "aliases": ["spring boot", "springboot", "spring framework"], "category": "Backend"},
+    {"name": "Django", "aliases": ["django rest", "drf", "django framework"], "category": "Backend"},
+    {"name": "Flask", "aliases": ["flask api", "flask framework"], "category": "Backend"},
+    {"name": "SQL Server", "aliases": ["mssql", "t-sql", "tsql", "microsoft sql", "ms sql"], "category": "Databases"},
+    {"name": "PostgreSQL", "aliases": ["postgres", "psql", "pgsql"], "category": "Databases"},
+    {"name": "MongoDB", "aliases": ["mongo", "nosql", "mongodb atlas"], "category": "Databases"},
+    {"name": "MySQL", "aliases": ["my sql", "mariadb"], "category": "Databases"},
+    {"name": "Redis", "aliases": ["redis cache", "redis db"], "category": "Databases"},
+    {"name": "Docker", "aliases": ["containers", "containerization", "docker compose", "dockerfile"], "category": "DevOps"},
+    {"name": "Kubernetes", "aliases": ["k8s", "kube", "kubectl", "k8", "kubernates"], "category": "DevOps"},
+    {"name": "Jenkins", "aliases": ["jenkins ci", "jenkins pipeline"], "category": "DevOps"},
+    {"name": "Terraform", "aliases": ["tf", "terraform cloud", "hcl"], "category": "DevOps"},
+    {"name": "TensorFlow", "aliases": ["tensorflow2", "keras"], "category": "Data Science"},
+    {"name": "PyTorch", "aliases": ["torch", "pytorch lightning"], "category": "Data Science"},
+    {"name": "Pandas", "aliases": ["pandas python", "dataframe"], "category": "Data Science"},
+    {"name": "Selenium", "aliases": ["selenium webdriver", "selenium grid"], "category": "Testing"},
+    {"name": "Cypress", "aliases": ["cypress.io", "cypress testing"], "category": "Testing"},
+    {"name": "Jest", "aliases": ["jest testing", "jest js"], "category": "Testing"}
+  ],
+  "locations": ["Bangalore", "Chennai", "Mumbai", "Hyderabad", "Delhi", "Pune", "Kolkata", "Noida", "Gurgaon"],
+  "availability_terms": {
+    "Available": [
+      "available",
+      "full time",
+      "full-time",
+      "fulltime",
+      "free",
+      "ready",
+      "not busy",
+      "open",
+      "can start",
+      "immediate",
+      "immediately"
+    ],
+    "Limited": [
+      "limited",
+      "partial",
+      "partially",
+      "part time",
+      "part-time",
+      "parttime",
+      "some availability",
+      "busy",
+      "half time",
+      "few hours"
+    ],
+    "Not Available": [
+      "not available",
+      "unavailable",
+      "occupied",
+      "no availability",
+      "fully booked",
+      "engaged",
+      "committed"
+    ]
+  },
+  "experience_patterns": [
+    "([0-9]+(?:\\.[0-9]+)?)\\s*(?:years?|yrs?|\\+)",
+    "([0-9]+(?:\\.[0-9]+)?)\\s*(?:years?|yrs?)\\s*(?:of)?\\s*experience"
+  ],
+  "skill_categories": {
+    "cloud": ["AWS", "Azure", "GCP"],
+    "frontend": ["React", "Angular", "Vue", "JavaScript"],
+    "backend": ["Node.js", ".NET Core", "Spring", "Django", "Flask"],
+    "databases": ["SQL Server", "PostgreSQL", "MongoDB", "MySQL", "Redis"],
+    "devops": ["Docker", "Kubernetes", "Jenkins", "Terraform"],
+    "data science": ["TensorFlow", "PyTorch", "Pandas", "Python"]
+  }
+}
